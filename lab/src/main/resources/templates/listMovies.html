@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Movie Ticket Order page - Welcome and choose a Movie</title>
+  <style type="text/css">
+    body {
+      width: 800px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Welcome to our Movie Ticket Shop App</h1>
+</header>
+<main>
+  <form th:method="POST" th:action="@{/}">
+    <p>Keywords:<input type="text" name="keywords"></p>
+    <p>Rating equal to or bigger than: <input type="text" name="rating"></p>
+    <input type="submit" value="Submit">
+  </form>
+  <form th:method="POST" th:action="@{/ticket-order/showOrderConfirmation}">
+  <h2>Choose movie:</h2>
+  <!-- Display radio buttons for each movie,
+          the value should be the movie title
+          and the displayed text should be Title: <movie_title>, Summary:<movie_summary>, Rating: <movie_rating> -->
+  <ul style="list-style-type: none">
+    <li th:each="movie : ${movies}">
+
+      <input type="radio" name="chosenMovie" th:value="${movie.getTitle()}">Title: <th:block th:text="${movie.getTitle()}"></th:block>, Summary: <th:block th:text="${movie.getSummary()}"></th:block>, Rating: <th:block th:text="${movie.getRating()}"></th:block>, Production: <th:block th:text="${movie.getProduction().getName()}"></th:block>
+      <a th:action="get" th:href="@{/movies/edit/{movieId}(movieId=${movie.getId().toString()})}">Edit</a>
+      <a th:href="@{/movies/delete/{movieId}(movieId=${movie.getId})}">Delete</a>
+    </li>
+    <li>
+      <a href="/movies/add-form">Add new movie</a>
+    </li>
+  </ul>
+
+  <h2>Choose number of tickets:</h2>
+
+  <input type="number" name="numTickets" min="1" max="10"><br/>
+  <br/>
+  <input type="submit" value="Submit">
+  </form>
+</main>
+</body>
+</html>
